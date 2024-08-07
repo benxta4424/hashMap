@@ -16,6 +16,14 @@ class LinkedList
         @head=new_node
     end
 
+    def find_key(key)
+        current_node=@head
+        while current_node
+            return key if current_node.key == key
+            current_node=current_node.next_node
+        end
+    end
+
     def to_s
         'Lista goala!' if @head.nil?
 
@@ -27,7 +35,7 @@ class LinkedList
             current_node=current_node.next_node
         end
 
-        elements
+        elements.join(' -> ')
     end
     
 

@@ -8,17 +8,15 @@ class HashMap
   def initialize(size=INITIAL_SIZE)
     @size=size
     @buckets=Array.new(size) {LinkedList.new}
-    @length=nil
+    @length=0
   end
 
   def hash_key(key)
     hash_code = 0
-    prime_number = 31
-    size=@size
-       
+    prime_number = 31       
     key.each_char { |char| hash_code = prime_number * hash_code + char.ord }
        
-    hash_code%size
+    hash_code % @size
   end
 
   def set(key,value)
@@ -27,22 +25,27 @@ class HashMap
     raise IndexError if index.negative? || index >= @buckets.length
 
     if @buckets[index].nil?
-      @buckets[index]=LinkedList.new
-      @length+=1
+      @buckets[index]=LinkedList.new     
     end
-    @buckets[index].prepend(key,value)
-    
 
+    @buckets[index].prepend(key,value)
+    @length+=1
+  end
+
+  def check_load
+    @length.to_f/INITIAL_SIZE
   end
 
   def to_s
     elements=[]
 
     @buckets.each_with_index do |items,index|
-      elements<<"Buckets #{index}:#{items}" unless items.nil?
+      unless items.nil?
+        elements<<"Bucket #{index}   #{items}"
+      end
     end
     
-    elements
+    elements.join("\n")
   end
 
 
